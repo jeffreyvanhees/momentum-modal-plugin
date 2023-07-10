@@ -97,7 +97,7 @@ watch(key, updateHeaders)
 
 export type useModalOptions = Partial<Visit & { onCancelToken: ({ cancel }: { cancel: VoidFunction }) => void; onBefore: GlobalEventCallback<"before">; onStart: GlobalEventCallback<"start">; onProgress: GlobalEventCallback<"progress">; onFinish: GlobalEventCallback<"finish">; onCancel: GlobalEventCallback<"cancel">; onSuccess: GlobalEventCallback<"success">; onError: GlobalEventCallback<"error"> }>
 
-const redirect = (options: useModalOptions) => {
+const redirect = () => {
   var redirectURL = modal.value?.redirectURL ?? modal.value?.baseURL
 
   vnode.value = false
@@ -109,16 +109,15 @@ const redirect = (options: useModalOptions) => {
   return router.visit(redirectURL, {
     preserveScroll: true,
     preserveState: true,
-    ...options,
   })
 }
 
-export const useModal = (options: useModalOptions) => {
+export const useModal = () => {
   return {
     show,
     vnode,
     close,
-    redirect: () => redirect(options),
+    redirect,
     props
   }
 }

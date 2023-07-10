@@ -1,6 +1,5 @@
-import { usePage } from "@inertiajs/vue3"
-import { router } from "@inertiajs/vue3"
-import { defineAsyncComponent, h, nextTick, watch, computed, ref, shallowRef } from "vue"
+import { router, usePage } from "@inertiajs/vue3"
+import { computed, defineAsyncComponent, h, nextTick, ref, shallowRef, watch } from "vue"
 import axios from "axios"
 import resolver from "./resolver"
 
@@ -37,7 +36,7 @@ const resetHeaders = () => {
 const updateHeaders = () => {
   setHeaders({
     "X-Inertia-Modal-Key": key.value,
-    "X-Inertia-Modal-Redirect": modal.value?.redirectURL,
+    "X-Inertia-Modal-Redirect": modal.value?.redirectURL
   })
 
   axios.defaults.headers.get["X-Inertia-Modal-Redirect"] = modal.value?.redirectURL ?? ""
@@ -67,9 +66,9 @@ const resolveComponent = () => {
   nonce.value = modal.value?.nonce
   vnode.value = component.value
     ? h(component.value, {
-        key: key.value,
-        ...props.value,
-      })
+      key: key.value,
+      ...props.value
+    })
     : ""
 
   nextTick(() => (show.value = true))
@@ -95,7 +94,9 @@ watch(
 
 watch(key, updateHeaders)
 
-const redirect = () => {
+const redirect = (options: {
+  replace: false,
+}) => {
   var redirectURL = modal.value?.redirectURL ?? modal.value?.baseURL
 
   vnode.value = false
@@ -107,15 +108,18 @@ const redirect = () => {
   return router.visit(redirectURL, {
     preserveScroll: true,
     preserveState: true,
+    ...options,
   })
 }
 
-export const useModal = () => {
+export const useModal = (options: {
+  replace: false,
+}) => {
   return {
     show,
     vnode,
     close,
-    redirect,
-    props,
+    redirect: () => redirect(options),
+    props
   }
 }

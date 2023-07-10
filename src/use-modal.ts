@@ -95,7 +95,9 @@ watch(
 
 watch(key, updateHeaders)
 
-const redirect = (options: Partial<Visit & { onCancelToken: ({ cancel }: { cancel: VoidFunction }) => void; onBefore: GlobalEventCallback<"before">; onStart: GlobalEventCallback<"start">; onProgress: GlobalEventCallback<"progress">; onFinish: GlobalEventCallback<"finish">; onCancel: GlobalEventCallback<"cancel">; onSuccess: GlobalEventCallback<"success">; onError: GlobalEventCallback<"error"> }> | undefined) => {
+export type useModalOptions = Partial<Visit & { onCancelToken: ({ cancel }: { cancel: VoidFunction }) => void; onBefore: GlobalEventCallback<"before">; onStart: GlobalEventCallback<"start">; onProgress: GlobalEventCallback<"progress">; onFinish: GlobalEventCallback<"finish">; onCancel: GlobalEventCallback<"cancel">; onSuccess: GlobalEventCallback<"success">; onError: GlobalEventCallback<"error"> }>
+
+const redirect = (options: useModalOptions) => {
   var redirectURL = modal.value?.redirectURL ?? modal.value?.baseURL
 
   vnode.value = false
@@ -111,7 +113,7 @@ const redirect = (options: Partial<Visit & { onCancelToken: ({ cancel }: { cance
   })
 }
 
-export const useModal = (options: Partial<Visit & { onCancelToken: ({ cancel }: { cancel: VoidFunction }) => void; onBefore: GlobalEventCallback<"before">; onStart: GlobalEventCallback<"start">; onProgress: GlobalEventCallback<"progress">; onFinish: GlobalEventCallback<"finish">; onCancel: GlobalEventCallback<"cancel">; onSuccess: GlobalEventCallback<"success">; onError: GlobalEventCallback<"error"> }> | undefined) => {
+export const useModal = (options: useModalOptions) => {
   return {
     show,
     vnode,
